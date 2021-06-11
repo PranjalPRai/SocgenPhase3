@@ -1,45 +1,61 @@
 package com.example.stockMarket.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 @Entity
-@Table(name="IPO Detail")
-public class IPODetailEntity {
+@Table(name="IPO")
+public class IPOEntity {
 	  
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	@Column(name="Company Name")
+	private int id;
+	@Column(name="CompanyName")
 	private String Company_Name;
 	
-	@Column(name="Stock Exchange")
-	private double Stock_Exchange;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "id",insertable = false, updatable = false)
+	@JsonIgnore
+	private StockExchangeEntity stockExchange;
 	
-	@Column(name="Price Per Share")
+	@Column(name="PricePerShare")
 	 private double Price_per_Share;
 	
-	@Column(name ="Total number of Shares")
+	@Column(name ="TotalnumberofShares")
 	private long Total_Number_of_Shares;
 	
-	@Column(name ="Open Date Time")
-	private String Open_Date_Time;
+	@Column(name ="OpenDateTime",nullable=false)
+	private Timestamp openDateTime;
 	
 	 @Column
 	 private String Remarks;
 	 
+	 
+	 //relationship between ipos and company
+ @ManyToOne(fetch = FetchType.LAZY, optional = false)
+		@JoinColumn(name = "id" ,insertable = false, updatable = false)
+		@JsonIgnore
+		private CompanyEntity company;
 	 
 	 public long getId() {
 		return id;
 	}
 
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -55,12 +71,12 @@ public class IPODetailEntity {
 
 
 	public double getStock_Exchange() {
-		return Stock_Exchange;
+		return getStock_Exchange();
 	}
 
 
-	public void setStock_Exchange(double stock_Exchange) {
-		Stock_Exchange = stock_Exchange;
+	public void setStock_Exchange(StockExchangeEntity stock_Exchange) {
+		stockExchange = stock_Exchange;
 	}
 
 
@@ -84,13 +100,13 @@ public class IPODetailEntity {
 	}
 
 
-	public String getOpen_Date_Time() {
-		return Open_Date_Time;
+	public Timestamp getOpen_Date_Time() {
+		return openDateTime;
 	}
 
 
-	public void setOpen_Date_Time(String open_Date_Time) {
-		Open_Date_Time = open_Date_Time;
+	public void setOpen_Date_Time(Timestamp open_Date_Time) {
+		openDateTime = open_Date_Time;
 	}
 
 
@@ -107,9 +123,9 @@ public class IPODetailEntity {
 	@Override
 		public String toString() {
 			return "IPO [ id ="+id+ " , Company Name= "+ Company_Name+
-					" ,Stock Exchange = "+ Stock_Exchange+ " ,Price Per Share ="
+					" ,Stock Exchange = "+ stockExchange+ " ,Price Per Share ="
 							+ Price_per_Share+ ", Total number of Shares = "+ Total_Number_of_Shares+ 
-							" , Open Date Time ="+ Open_Date_Time+ " , Remarks= "+ Remarks +"]";
+							" , Open Date Time ="+ openDateTime+ " , Remarks= "+ Remarks +"]";
 		}
 	
 	

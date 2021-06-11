@@ -9,18 +9,45 @@ package com.example.stockMarket.model;
  */
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
+
 @Entity
-@Table (name="Stock Price")
+@Table (name="StockPrice")
 public class StockPriceEntity {
 	@Id
-	@Column(name ="Company Code")
-	private long Company_Code;
-	@Column(name=" Stock Exchange")
-	private double Stock_Exchange;
-	 @Column(name="Current Price")
+	 @GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	
+//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+//	@JoinColumn(name = "id",insertable = false, updatable = false)
+//	@JsonIgnore
+//	private CompanyEntity company;
+//	
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "company_id")
+	@JsonIgnore
+	private CompanyEntity company;
+	
+	@Column(name=" StockExchange")
+	private String StockExchange;
+	
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "id",insertable = false, updatable = false)
+	@JsonIgnore
+	private StockExchangeEntity stockExchange;
+	 @Column(name="CurrentPrice")
 	private double Current_Price;
 	@Column
 	private String Date;
@@ -30,29 +57,19 @@ public class StockPriceEntity {
 	
 	
 
-	public long getCompany_Code() {
-		return Company_Code;
+
+
+
+
+	public String getStock_Exchange() {
+		return getStock_Exchange();
 	}
 
 
 
 
-	public void setCompany_Code(long company_Code) {
-		Company_Code = company_Code;
-	}
-
-
-
-
-	public double getStock_Exchange() {
-		return Stock_Exchange;
-	}
-
-
-
-
-	public void setStock_Exchange(double stock_Exchange) {
-		Stock_Exchange = stock_Exchange;
+	public void setStock_Exchange(String stock_Exchange) {
+		StockExchange = stock_Exchange;
 	}
 
 
@@ -103,7 +120,7 @@ public class StockPriceEntity {
 	@Override
 	public String toString()
 	{
-		return "[ Company Code ="+ Company_Code+ ",Stock Exchange = "+Stock_Exchange+
+		return "[ Company Code ="+ ",Stock Exchange = "+StockExchange+
 				",Current Price = "+ Current_Price+ ", Date = "+ Date+", Time= "+ Time+ "]";
 		
 	}

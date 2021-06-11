@@ -1,15 +1,28 @@
 package com.example.stockMarket.model;
 
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 //import javax.persistence.GeneratedValue;
 //import javax.persistence.GenerationType;
 //import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
+
+
 
 
 @Entity
@@ -17,26 +30,55 @@ import javax.persistence.Table;
 public class CompanyEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	@Column(name ="Company Name")
+	private int id;
+	@Column(name ="CompanyName")
 	private String Company_Name; 
+	
 	@Column
-	private long Turnover;
+	private int Turnover;
+	
 	@Column(name="CEO")
 	private String CEO;
-	@Column(name =" Board of Director")
-	private String[] Board_of_Directors;
-//	@Column(name="Listed in Stock Excahnge")
-//	private int Listed_in_Stock_Exchange;
-	@Column(name =" Sector")
-	private String Sector;
-	@Column(name=" Write Up")
+	@Column(name =" BoardofDirector")
+	
+	private String Board_of_Directors;
+
+	//	@Column(name="Listed in Stock Exchange")
+	//private int Listed_in_Stock_Exchange;
+	
+	@Column(name=" WriteUp")
 	private String Write_Up;
-//	@Column(name ="Stock Code")
+
+	//	@Column(name ="Stock Code")
 	//private String Stock_Code;
 	
+	//Relationships company and ipos
+	@OneToMany(mappedBy="company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<IPOEntity> ipos;
 	
 	
+	//relationship between sectors and company
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "Id",insertable = false, updatable = false)
+	@JsonIgnore
+	private SectorEntity sector;
+	
+	//relationship between stockprice and company
+	//@OneToMany(mappedBy="company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //private List<StockPriceEntity> StockPrices;
+	
+//	public List<StockPriceEntity> getStockPrices() {
+//		return StockPrices;
+//	}
+//
+//
+//
+//	public void setStockPrices(List<StockPriceEntity> stockPrices) {
+//		StockPrices = stockPrices;
+//	}
+
+
+
 	public String getCompany_Name() {
 		return Company_Name;
 	}
@@ -55,7 +97,7 @@ public class CompanyEntity {
 
 
 
-	public void setTurnover(long turnover) {
+	public void setTurnover(int turnover) {
 		Turnover = turnover;
 	}
 
@@ -73,13 +115,13 @@ public class CompanyEntity {
 
 
 
-	public String[] getBoard_of_Directors() {
+	public String getBoard_of_Directors() {
 		return Board_of_Directors;
 	}
 
 
 
-	public void setBoard_of_Directors(String[] board_of_Directors) {
+	public void setBoard_of_Directors(String board_of_Directors) {
 		Board_of_Directors = board_of_Directors;
 	}
 
@@ -97,14 +139,14 @@ public class CompanyEntity {
 
 
 
-	public String getSector() {
-		return Sector;
+	public SectorEntity getSector() {
+		return sector;
 	}
 
 
 
-	public void setSector(String sector) {
-		Sector = sector;
+	public void setSector(SectorEntity sector) {
+		this.sector = sector;
 	}
 
 
@@ -137,6 +179,6 @@ public class CompanyEntity {
 	@Override
 	public String toString() {
 		return "[  Company Name = "+ Company_Name + "CEO_Name = "+ CEO+ ", BOD = " + Board_of_Directors  
-				+ ", Sector = "+ Sector + ",Write Up ="+ Write_Up   +"]" ;
+				+ ", Sector = "+ sector + ",Write Up ="+ Write_Up   +"]" ;
 	}
 }
