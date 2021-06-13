@@ -12,15 +12,24 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 
 @Entity
 @Table
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class SectorEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int Id;
+	private int Sectroid;
 	
 	@Column(name="Sector_Name")
 	private String SectorName;
@@ -30,30 +39,26 @@ public class SectorEntity {
 	@OneToMany(mappedBy="sector", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<CompanyEntity> companies;
 
+	private String Sectorid;
+
+	
+
+	@Override
+		public String toString() {
+		return "Sector [ "+ "Id = "+ Sectorid+ " , Sector Name= "+
+		getSectorName() + " ,Brief=  "+ Brief+ " ]";
+	}
+
+
+
 	public String getSectorName() {
 		return SectorName;
 	}
 
 
+
 	public void setSectorName(String sectorName) {
 		SectorName = sectorName;
-	}
-
-
-	public String getBrief() {
-		return Brief;
-	}
-
-
-	public void setBrief(String brief) {
-		Brief = brief;
-	}
-
-
-	@Override
-		public String toString() {
-		return "Sector [ "+ "Id = "+ Id+ " , Sector Name= "+
-		SectorName + " ,Brief=  "+ Brief+ " ]";
 	}
 	
 	

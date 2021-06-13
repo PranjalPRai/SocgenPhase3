@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 //import javax.persistence.GeneratedValue;
@@ -20,6 +22,11 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 
 
@@ -27,10 +34,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="company")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class CompanyEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private int Companyid;
 	@Column(name ="CompanyName")
 	private String Company_Name; 
 	
@@ -59,126 +70,256 @@ public class CompanyEntity {
 	
 	//relationship between sectors and company
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "Id",insertable = false, updatable = false)
+	@JoinColumn(name = "Sectorid",insertable = false, updatable = false)
 	@JsonIgnore
 	private SectorEntity sector;
+	@Column
+	private String companysector;
+			
+	{if(sector!=null&&sector.getSectorName()!=null)
+			{companysector=sector.getSectorName();}}
 	
 	//relationship between stockprice and company
-	//@OneToMany(mappedBy="company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //private List<StockPriceEntity> StockPrices;
+	@OneToMany(mappedBy="company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<StockPriceEntity> StockPrices;
 	
-//	public List<StockPriceEntity> getStockPrices() {
-//		return StockPrices;
-//	}
-//
-//
-//
-//	public void setStockPrices(List<StockPriceEntity> stockPrices) {
-//		StockPrices = stockPrices;
-//	}
+   @ManyToMany
+	@JoinTable(
+			  name = "company_stockexchange", 
+			  joinColumns = @JoinColumn(name = "companyid"), 
+			  inverseJoinColumns = @JoinColumn(name = "stockexchangeid"))
+   List<StockExchangeEntity> StockExchangeList;
 
-
-
-	public String getCompany_Name() {
-		return Company_Name;
-	}
-
-
-
-	public void setCompany_Name(String company_Name) {
-		Company_Name = company_Name;
-	}
-
-
-
-	public long getTurnover() {
-		return Turnover;
-	}
-
-
-
-	public void setTurnover(int turnover) {
-		Turnover = turnover;
-	}
-
-
-
-	public String getCEO_Name() {
-		return CEO;
-	}
-
-
-
-	public void setCEO_Name(String cEO_Name) {
-		CEO = cEO_Name;
-	}
-
-
-
-	public String getBoard_of_Directors() {
-		return Board_of_Directors;
-	}
-
-
-
-	public void setBoard_of_Directors(String board_of_Directors) {
-		Board_of_Directors = board_of_Directors;
-	}
-
-
-
-	//public int getListed_in_Stock_Exchange() {
-		//return Listed_in_Stock_Exchange;
-//	}
-
-
-
-	//public void setListed_in_Stock_Exchange(int listed_in_Stock_Exchange) {
-		//Listed_in_Stock_Exchange = listed_in_Stock_Exchange;
-	//}
-
-
-
-	public SectorEntity getSector() {
-		return sector;
-	}
-
-
-
-	public void setSector(SectorEntity sector) {
-		this.sector = sector;
-	}
-
-
-
-	public String getWrite_Up() {
-		return Write_Up;
-	}
-
-
-
-	public void setWrite_Up(String write_Up) {
-		Write_Up = write_Up;
-	}
-
-
-
-//	public String getStock_Code() {
-//		return Stock_Code;
-//	}
+   
 
 
 
 
-
-//	@Override
-//	public String toString() {
-//		return "[  Company Name = "+ Company_Name + "CEO_Name = "+ CEO_Name+ ", BOD = " + Board_of_Directors + ",Listed in Stock Exchange ="+ Listed_in_Stock_Exchange 
-//				+ ", Sector = "+ Sector + ",Write Up ="+ Write_Up +", Stock Code = "+ Stock_Code     +"]" ;
-//	}
-	@Override
-	public String toString() {
-		return "[  Company Name = "+ Company_Name + "CEO_Name = "+ CEO+ ", BOD = " + Board_of_Directors  
-				+ ", Sector = "+ sector + ",Write Up ="+ Write_Up   +"]" ;
-	}
+public int getCompanyid() {
+	return Companyid;
 }
+
+
+
+
+
+
+public void setCompanyid(int companyid) {
+	Companyid = companyid;
+}
+
+
+
+
+
+
+public String getCompany_Name() {
+	return Company_Name;
+}
+
+
+
+
+
+
+public void setCompany_Name(String company_Name) {
+	Company_Name = company_Name;
+}
+
+
+
+
+
+
+public int getTurnover() {
+	return Turnover;
+}
+
+
+
+
+
+
+public void setTurnover(int turnover) {
+	Turnover = turnover;
+}
+
+
+
+
+
+
+public String getCEO() {
+	return CEO;
+}
+
+
+
+
+
+
+public void setCEO(String cEO) {
+	CEO = cEO;
+}
+
+
+
+
+
+
+public String getBoard_of_Directors() {
+	return Board_of_Directors;
+}
+
+
+
+
+
+
+public void setBoard_of_Directors(String board_of_Directors) {
+	Board_of_Directors = board_of_Directors;
+}
+
+
+
+
+
+
+public String getWrite_Up() {
+	return Write_Up;
+}
+
+
+
+
+
+
+public void setWrite_Up(String write_Up) {
+	Write_Up = write_Up;
+}
+
+
+
+
+
+
+public List<IPOEntity> getIpos() {
+	return ipos;
+}
+
+
+
+
+
+
+public void setIpos(List<IPOEntity> ipos) {
+	this.ipos = ipos;
+}
+
+
+
+
+
+
+public SectorEntity getSector() {
+	return sector;
+}
+
+
+
+
+
+
+public void setSector(SectorEntity sector) {
+	this.sector = sector;
+}
+
+
+
+
+
+
+public List<StockPriceEntity> getStockPrices() {
+	return StockPrices;
+}
+
+
+
+
+
+
+public void setStockPrices(List<StockPriceEntity> stockPrices) {
+	StockPrices = stockPrices;
+}
+
+
+
+
+
+
+public List<StockExchangeEntity> getStockExchangeList() {
+	return StockExchangeList;
+}
+
+
+
+
+
+
+public void setStockExchangeList(List<StockExchangeEntity> stockExchangeList) {
+	StockExchangeList = stockExchangeList;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+public CompanyEntity(int companyid, String company_Name, int turnover, String cEO, String board_of_Directors,
+		String write_Up, String companysecotor) {
+	super();
+	Companyid = companyid;
+	Company_Name = company_Name;
+	Turnover = turnover;
+	CEO = cEO;
+	Board_of_Directors = board_of_Directors;
+	Write_Up = write_Up;
+	this.companysector = companysecotor;
+}
+
+
+
+
+
+
+public CompanyEntity() {
+	super();
+}
+
+
+
+
+
+
+@Override
+public String toString() {
+	return "CompanyEntity [Companyid=" + Companyid + ", Company_Name=" + Company_Name + ", Turnover=" + Turnover
+			+ ", CEO=" + CEO + ", Board_of_Directors=" + Board_of_Directors + ", Write_Up=" + Write_Up + ", ipos="
+			+ ipos + ", sector=" + companysector + ", StockPrices=" + StockPrices
+			+ ", StockExchangeList=" + StockExchangeList + "]";
+}
+
+
+}
+
+
+
+
+

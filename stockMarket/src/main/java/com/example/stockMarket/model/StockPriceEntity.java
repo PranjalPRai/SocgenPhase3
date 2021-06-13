@@ -19,14 +19,23 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 
 @Entity
 @Table (name="StockPrice")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class StockPriceEntity {
 	@Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private int StorckPriceid;
 	
 //	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 //	@JoinColumn(name = "id",insertable = false, updatable = false)
@@ -35,7 +44,7 @@ public class StockPriceEntity {
 //	
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "company_id")
+	@JoinColumn(name = "Companyid")
 	@JsonIgnore
 	private CompanyEntity company;
 	
@@ -44,7 +53,7 @@ public class StockPriceEntity {
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "id",insertable = false, updatable = false)
+	@JoinColumn(name = "StockExchangeid",insertable = false, updatable = false)
 	@JsonIgnore
 	private StockExchangeEntity stockExchange;
 	 @Column(name="CurrentPrice")
@@ -59,60 +68,6 @@ public class StockPriceEntity {
 
 
 
-
-
-	public String getStock_Exchange() {
-		return getStock_Exchange();
-	}
-
-
-
-
-	public void setStock_Exchange(String stock_Exchange) {
-		StockExchange = stock_Exchange;
-	}
-
-
-
-
-	public double getCurrent_Price() {
-		return Current_Price;
-	}
-
-
-
-
-	public void setCurrent_Price(double current_Price) {
-		Current_Price = current_Price;
-	}
-
-
-
-
-	public String getDate() {
-		return Date;
-	}
-
-
-
-
-	public void setDate(String date) {
-		Date = date;
-	}
-
-
-
-
-	public String getTime() {
-		return Time;
-	}
-
-
-
-
-	public void setTime(String time) {
-		Time = time;
-	}
 
 
 
