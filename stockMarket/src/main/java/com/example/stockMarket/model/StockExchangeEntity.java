@@ -50,5 +50,71 @@ public class StockExchangeEntity {
 	
 	@ManyToMany(mappedBy="StockExchangeList")
 	List<CompanyEntity>CompanyList;
+
+	public int getStockExchangenid() {
+		return StockExchangenid;
+	}
+
+	public void setStockExchangenid(int stockExchangenid) {
+		StockExchangenid = stockExchangenid;
+	}
+
+	public String getStockExchange() {
+		return StockExchange;
+	}
+
+	public void setStockExchange(String stockExchange) {
+		StockExchange = stockExchange;
+	}
+
+	public String getBrief() {
+		return Brief;
+	}
+
+	public void setBrief(String brief) {
+		Brief = brief;
+	}
+
+	public String getContactAddress() {
+		return ContactAddress;
+	}
+
+	public void setContactAddress(String contactAddress) {
+		ContactAddress = contactAddress;
+	}
+
+	public String getRemarks() {
+		return Remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		Remarks = remarks;
+	}
+
+	public List<IPOEntity> getIpos() {
+		return ipos;
+	}
+
+	public void setIpos(List<IPOEntity> ipos) {
+		this.ipos = ipos;
+	}
+
+	public List<StockPriceEntity> getStockPrices() {
+		return StockPrices;
+	}
+
+	public void setStockPrices(List<StockPriceEntity> stockPrices) {
+		StockPrices = stockPrices;
+	}
+
+	public List<CompanyEntity> getCompanyList() {
+		return CompanyList;
+	}
+
+	public void setCompanyList(List<CompanyEntity> companyList) {
+		CompanyList = companyList;
+	}
+	
+	
 	
 }

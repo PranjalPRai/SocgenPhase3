@@ -20,7 +20,10 @@ import javax.persistence.OneToMany;
 //import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,6 +41,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@Transactional
 public class CompanyEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -69,18 +73,18 @@ public class CompanyEntity {
 	
 	
 	//relationship between sectors and company
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "Sectorid",insertable = false, updatable = false)
-	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
+	@JoinColumn
+    //@JsonIgnore
 	private SectorEntity sector;
-	@Column
-	private String companysector;
+//	@Column
+//	private String companysector;
 			
-	{if(sector!=null&&sector.getSectorName()!=null)
-			{companysector=sector.getSectorName();}}
+//	{if(sector!=null&&sector.getSectorName()!=null)
+//			{companysector=sector.getSectorName();}}
 	
 	//relationship between stockprice and company
-	@OneToMany(mappedBy="company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="company", fetch = FetchType.LAZY	)
     private List<StockPriceEntity> StockPrices;
 	
    @ManyToMany
@@ -282,17 +286,7 @@ public void setStockExchangeList(List<StockExchangeEntity> stockExchangeList) {
 
 
 
-public CompanyEntity(int companyid, String company_Name, int turnover, String cEO, String board_of_Directors,
-		String write_Up, String companysecotor) {
-	super();
-	Companyid = companyid;
-	Company_Name = company_Name;
-	Turnover = turnover;
-	CEO = cEO;
-	Board_of_Directors = board_of_Directors;
-	Write_Up = write_Up;
-	this.companysector = companysecotor;
-}
+
 
 
 
@@ -312,8 +306,18 @@ public CompanyEntity() {
 public String toString() {
 	return "CompanyEntity [Companyid=" + Companyid + ", Company_Name=" + Company_Name + ", Turnover=" + Turnover
 			+ ", CEO=" + CEO + ", Board_of_Directors=" + Board_of_Directors + ", Write_Up=" + Write_Up + ", ipos="
-			+ ipos + ", sector=" + companysector + ", StockPrices=" + StockPrices
+			+ ipos + ", StockPrices=" + StockPrices
 			+ ", StockExchangeList=" + StockExchangeList + "]";
+}
+
+
+
+
+
+
+public CompanyEntity(String company_Name) {
+	super();
+	Company_Name = company_Name;
 }
 
 

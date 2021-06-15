@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,23 +27,76 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@Transactional
 public class SectorEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int Sectroid;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO )
+	private int Sectorid;
+
+	public int getSectorid() {
+		return Sectorid;
+	}
+
+
 	@Column(name="Sector_Name")
 	private String SectorName;
 	
 	@Column
 	private String Brief;
-	@OneToMany(mappedBy="sector", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<CompanyEntity> companies;
+	
+	@OneToMany(mappedBy="sector",targetEntity=CompanyEntity.class, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	private List<CompanyEntity> company;
 
-	private String Sectorid;
+	public void setSectorid(int sectorid) {
+		Sectorid = sectorid;
+	}
+
+
+
+
+
+	public SectorEntity(String sectorName) {
+		super();
+		SectorName = sectorName;
+	}
+
+
+
+	public String getBrief() {
+		return Brief;
+	}
+
+
+
+	public void setBrief(String brief) {
+		Brief = brief;
+	}
+
+
+
+	public List<CompanyEntity> getCompany() {
+		return company;
+	}
+
+
+
+	public void setCompany(List<CompanyEntity> company) {
+		this.company = company;
+	}
+
+
+
 
 	
+
+	
+
+	public SectorEntity() {
+		super();
+	}
+
+
 
 	@Override
 		public String toString() {

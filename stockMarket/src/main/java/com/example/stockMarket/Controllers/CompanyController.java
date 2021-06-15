@@ -33,6 +33,8 @@ public class CompanyController {
 
 	@Autowired
 	private CompanyService companyservice;
+	@Autowired
+	private SectorService sectorservice;
 	
 //	@RequestMapping(value = "/test", method=RequestMethod.GET)
 //	public String test(){
@@ -43,6 +45,7 @@ public class CompanyController {
 	public ResponseEntity<List<CompanyEntity>> companylist()
 	{
 		return new ResponseEntity<List<CompanyEntity>>(companyservice.findAllCompany(),HttpStatus.OK);
+
 	}
 	
 	@GetMapping("/{companyId}")
@@ -76,17 +79,55 @@ public class CompanyController {
 //												@RequestBody Director director){
 //		return new ResponseEntity<>(companyService.addDirector(companyId, director), HttpStatus.OK);
 //    }
-    @PostMapping("/all/addCompany")
-	public ResponseEntity<String> addCompany(@RequestBody CompanyEntity comapanyentity)
-	{
-		try {
-			companyservice.addCompany(comapanyentity);
-			return  new ResponseEntity<String>("Comapny is added", HttpStatus.OK); 
-		}
-		catch(Exception e)
-		{return new ResponseEntity<String>("Comapny is already present",HttpStatus.OK);}
-		finally {int i=6;} 
+    @PostMapping("/addCompany/{companyname}/{sector}")
+	public ResponseEntity<String> addCompany(@PathVariable("companyname")String companyname,@PathVariable("sector")String sector,
+			@RequestBody CompanyEntity comapanyentity)
+	{      CompanyEntity currentity=new CompanyEntity();
+	      SectorEntity secentity= new SectorEntity();
+	      secentity.setSectorName(sector);
+	      //secentity.setSectorid(1);
+	comapanyentity.setCompany_Name(companyname);
+	comapanyentity.setSector(secentity);
+	//secentity.setSectorName(sector);
+	//sectorservice.addsector(secentity);
+	companyservice.addCompany(comapanyentity);
+	
+	
+	
+	return  new ResponseEntity<String>("Comapny is added", HttpStatus.OK); 
+	
+	//currentity.
+//		try {
+			//companyservice.addCompany(comapanyentity);
+			//return  new ResponseEntity<String>("Comapny is added", HttpStatus.OK); 
+//		}
+//		catch(Exception e)
+//		{return new ResponseEntity<String>("Comapny is already present",HttpStatus.OK);}
+//		finally {int i=6;} 
+	}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 	}
-}
+
