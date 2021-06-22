@@ -14,6 +14,9 @@ import javax.persistence.Table;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,8 +48,22 @@ public class SectorEntity {
 	@Column
 	private String Brief;
 	
-	@OneToMany(mappedBy="sector",targetEntity=CompanyEntity.class, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+
+	@OneToMany(mappedBy="sector",targetEntity=CompanyEntity.class )
+	 @JsonManagedReference
+	  @JsonIgnore  
 	private List<CompanyEntity> company;
+
+	public SectorEntity(String sectorName, String brief, List<CompanyEntity> company) {
+		super();
+		SectorName = sectorName;
+		Brief = brief;
+		this.company = company;
+	}
+
+
+
+
 
 	public void setSectorid(int sectorid) {
 		Sectorid = sectorid;

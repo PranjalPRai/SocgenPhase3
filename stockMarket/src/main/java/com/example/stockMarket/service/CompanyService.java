@@ -13,5 +13,6 @@ public interface CompanyService  {
 	List<CompanyEntity> findAllCompany();
 	void deleteById(Integer companyId);
 	void addCompany(CompanyEntity companyentity);
+	void updateCompany(CompanyEntity companyentity,Integer companyid);
 	
 }

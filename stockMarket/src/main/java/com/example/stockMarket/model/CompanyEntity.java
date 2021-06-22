@@ -22,7 +22,9 @@ import javax.persistence.Table;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -73,19 +75,18 @@ public class CompanyEntity {
 	
 	
 	//relationship between sectors and company
-	@ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
-	@JoinColumn
-    //@JsonIgnore
-	private SectorEntity sector;
-//	@Column
-//	private String companysector;
-			
-//	{if(sector!=null&&sector.getSectorName()!=null)
-//			{companysector=sector.getSectorName();}}
+		@ManyToOne(fetch = FetchType.LAZY)
+		 @JsonBackReference
+		//@JoinColumn
+	    //@JsonIgnore
+		private SectorEntity sector;
+
 	
 	//relationship between stockprice and company
-	@OneToMany(mappedBy="company", fetch = FetchType.LAZY	)
-    private List<StockPriceEntity> StockPrices;
+//	@OneToMany(mappedBy="company", fetch = FetchType.LAZY	)
+//	s
+//	  @JsonIgnore
+//    private List<StockPriceEntity> StockPrices;
 	
    @ManyToMany
 	@JoinTable(
@@ -243,18 +244,18 @@ public void setSector(SectorEntity sector) {
 
 
 
-public List<StockPriceEntity> getStockPrices() {
-	return StockPrices;
-}
-
-
-
-
-
-
-public void setStockPrices(List<StockPriceEntity> stockPrices) {
-	StockPrices = stockPrices;
-}
+//public List<StockPriceEntity> getStockPrices() {
+//	return StockPrices;
+//}
+//
+//
+//
+//
+//
+//
+//public void setStockPrices(List<StockPriceEntity> stockPrices) {
+//	StockPrices = stockPrices;
+//}
 
 
 
@@ -292,9 +293,49 @@ public void setStockExchangeList(List<StockExchangeEntity> stockExchangeList) {
 
 
 
+//
+//public CompanyEntity(String company_Name, int turnover, String cEO, String board_of_Directors, String write_Up,
+//		List<IPOEntity> ipos, SectorEntity sector, List<StockPriceEntity> stockPrices,
+//		List<StockExchangeEntity> stockExchangeList) {
+//	super();
+//	Company_Name = company_Name;
+//	Turnover = turnover;
+//	CEO = cEO;
+//	Board_of_Directors = board_of_Directors;
+//	Write_Up = write_Up;
+//	this.ipos = ipos;
+//	this.sector = sector;
+//	StockPrices = stockPrices;
+//	StockExchangeList = stockExchangeList;
+//}
+
+
+
+
+
 
 public CompanyEntity() {
 	super();
+}
+
+
+
+
+
+
+public CompanyEntity(int companyid, String company_Name, int turnover, String cEO, String board_of_Directors,
+		String write_Up, List<IPOEntity> ipos, SectorEntity sector, List<StockPriceEntity> stockPrices,
+		List<StockExchangeEntity> stockExchangeList) {
+	super();
+	Companyid = companyid;
+	Company_Name = company_Name;
+	Turnover = turnover;
+	CEO = cEO;
+	Board_of_Directors = board_of_Directors;
+	Write_Up = write_Up;
+	this.ipos = ipos;
+	this.sector = sector;
+	StockExchangeList = stockExchangeList;
 }
 
 
@@ -306,7 +347,7 @@ public CompanyEntity() {
 public String toString() {
 	return "CompanyEntity [Companyid=" + Companyid + ", Company_Name=" + Company_Name + ", Turnover=" + Turnover
 			+ ", CEO=" + CEO + ", Board_of_Directors=" + Board_of_Directors + ", Write_Up=" + Write_Up + ", ipos="
-			+ ipos + ", StockPrices=" + StockPrices
+			+ ipos 
 			+ ", StockExchangeList=" + StockExchangeList + "]";
 }
 

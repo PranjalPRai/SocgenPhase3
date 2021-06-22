@@ -26,6 +26,8 @@ public class CompanyServiceImpl implements CompanyService {
    
 	@Autowired
 	private CompanyDao companyDao;
+	@Autowired
+	private SectorDao sectordao;
   
 	@Override
 	public CompanyEntity findCompanyById(Integer Companyid) {
@@ -57,6 +59,18 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public void addCompany(CompanyEntity companyentity) {
 		CompanyEntity ent= companyDao.save(companyentity);
+	}
+
+	@Override
+	public void updateCompany(CompanyEntity companyentity, Integer companyid) {
+		CompanyEntity compent=companyDao.getById(companyid);
+		compent.setCompany_Name(companyentity.getCompany_Name());
+		compent.setCEO(companyentity.getCEO());
+		compent.setTurnover(companyentity.getTurnover());
+		compent.setCompanyid(companyentity.getCompanyid());
+		compent.setWrite_Up(companyentity.getWrite_Up());
+		compent.setSector(sectordao.getById(1));
+		companyDao.save(compent);
 	}
 	
 

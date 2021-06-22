@@ -3,8 +3,10 @@ package com.example.stockMarket.Controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import com.example.stockMarket.service.SectorService;
 
 @RestController
 @RequestMapping("/sector")
+@CrossOrigin(origins = "http://localhost:3000")
 public class SectorController {
 	@Autowired  
 	SectorService sectorservice;
@@ -40,7 +43,7 @@ public class SectorController {
     
 
 
-       @PostMapping("/addSector/{sectorname}")
+       @PostMapping("/addSector")
        public ResponseEntity<String> addSector(@PathVariable("sectorname")String sectorname,
 		@RequestBody SectorEntity sectorentity)
        {      
@@ -53,6 +56,10 @@ public class SectorController {
 
 
        }
+       //@GetMapping("/company/{sectorid}")
+       //@Query("select c from CompanyEntity where c.sector.SectorName=?1")
+     //  public ResponseEntity<List<CompanyEntity>>findcompanybysector(@PathVariable("sector")Integer sectorid);
+       
        
        
 }

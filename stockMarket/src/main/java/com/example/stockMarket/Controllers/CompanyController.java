@@ -4,12 +4,18 @@ import com.example.stockMarket.model.*;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,6 +35,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequestMapping("/company")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CompanyController {
 
 	@Autowired
@@ -36,6 +43,8 @@ public class CompanyController {
 	@Autowired
 	private SectorService sectorservice;
 	
+	@Autowired
+  private EntityManager entitymanager;
 //	@RequestMapping(value = "/test", method=RequestMethod.GET)
 //	public String test(){
 //		return "Success";
@@ -43,12 +52,12 @@ public class CompanyController {
 	
 	@GetMapping("/all")
 	public ResponseEntity<List<CompanyEntity>> companylist()
-	{
+	{ 
 		return new ResponseEntity<List<CompanyEntity>>(companyservice.findAllCompany(),HttpStatus.OK);
 
 	}
 	
-	@GetMapping("/{companyId}")
+	@GetMapping("/find/{companyId}")
 	public ResponseEntity<CompanyEntity> companybyId(@PathVariable("companyId") Integer companyId)
 	{
 		return new ResponseEntity<CompanyEntity>(companyservice.findCompanyById(companyId),HttpStatus.OK);
@@ -79,36 +88,41 @@ public class CompanyController {
 //												@RequestBody Director director){
 //		return new ResponseEntity<>(companyService.addDirector(companyId, director), HttpStatus.OK);
 //    }
-    @PostMapping("/addCompany/{companyname}/{sector}")
-	public ResponseEntity<String> addCompany(@PathVariable("companyname")String companyname,@PathVariable("sector")String sector,
-			@RequestBody CompanyEntity comapanyentity)
-	{      CompanyEntity currentity=new CompanyEntity();
-	      SectorEntity secentity= new SectorEntity();
-	      secentity.setSectorName(sector);
-	      //secentity.setSectorid(1);
-	comapanyentity.setCompany_Name(companyname);
-	comapanyentity.setSector(secentity);
-	//secentity.setSectorName(sector);
-	//sectorservice.addsector(secentity);
-	companyservice.addCompany(comapanyentity);
+    @PostMapping("/addCompany/{sector}")
+	public ResponseEntity<String> addCompany(@PathVariable("sector")String sector,
+			@RequestBody CompanyEntity companyentity)
+	{      
+	      
+	      
+	      
+	      TypedQuery<SectorEntity> q1 =   entitymanager.createQuery(" select c from SectorEntity c where c.SectorName =: name",SectorEntity.class);
+	        ((javax.persistence.Query) q1).setParameter("name", sector); 
+	 
+	        
+	 
+	     SectorEntity c =  (SectorEntity) ((javax.persistence.Query) q1).getSingleResult();//returns 
+	       // System.out.println("Look here array" +c.getId());
+	       CompanyEntity csmap = new CompanyEntity();
+	     companyentity.setSector(c);
+	       
+	 companyservice.addCompany(companyentity);
 	
 	
 	
-	return  new ResponseEntity<String>("Comapny is added", HttpStatus.OK); 
+	return  new ResponseEntity<String>("Comapny is added"+companyentity.getCompany_Name(), HttpStatus.OK); 
 	
-	//currentity.
-//		try {
-			//companyservice.addCompany(comapanyentity);
-			//return  new ResponseEntity<String>("Comapny is added", HttpStatus.OK); 
-//		}
-//		catch(Exception e)
-//		{return new ResponseEntity<String>("Comapny is already present",HttpStatus.OK);}
-//		finally {int i=6;} 
+
 	}
 		
 		
 		
+    @PutMapping("/companies/{companyId}")
+	public ResponseEntity<String> updateCompany(@RequestBody CompanyEntity companyentity,@PathVariable("companyId") Integer companyId){
+	    companyservice.updateCompany(companyentity, companyId);
+    	
+    	return  new ResponseEntity<String>("Comapny is updated" ,HttpStatus.OK); 
 		
+	}	
 		
 		
 		

@@ -10,6 +10,7 @@ public interface SectorService {
 	void addsector(SectorEntity sectorentity);
 	List<SectorEntity>getAllSector();
 	SectorEntity getSectorById(Integer sectorid);
+	
 //	@Query(
 //			  value = "SELECT * FROM company c WHERE c. = ?1", 
 //			  nativeQuery = true)
